@@ -1,6 +1,6 @@
 To get started on your "MINI WEATHER STATION" project, let's break down the requirements and steps needed:
 
-Hardware Setup
+*Hardware Setup*
 
 1. Raspberry Pi 4B:
    - Install Raspbian OS.
@@ -14,3 +14,7 @@ Hardware Setup
 4. 7-inch Screen:
    - Connect the Screen to the HDMI port of the Raspberry Pi.
    - Adjust the display settings in the Raspberry Pi configuration if necessary.
+
+*Software Setup*
+1. Install Required Libraries:
+   
