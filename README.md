@@ -39,3 +39,23 @@ To get started on your "MINI WEATHER STATION" project, let's break down the requ
    ```
    sudo apt-get install python3-tk
    ```
+*Explanation*
+
+1. Database Setup:
+   * Create a SQLite database to store temperature and humidity data.
+
+2. Tkinter Interface:
+   * Set up labels to display the temperature and humidity readings.
+   * Create a canvas to show the live camera feed.
+   * Add a button to snap and save pictures from the camera.
+
+3. Sensor Data Update:
+   * Continuously read data from the DHT 11 sensor and update the Tkinter labels.
+
+4. Live Camera Feed Update:
+   * Capture images from the camera at regular intervals and update the Tkinter canvas with these images.
+
+5. Snap and Save Functionality:
+   * Capture and save an image when the button is clicked, displaying a message box to confirm.
+
+This setup provides a complete solution for your mini weather station, integrating sensor readings, live camera feed, and the ability to snap and save pictures, all within a Tkinter GUI.
