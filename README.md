@@ -20,11 +20,11 @@ To get started on your "MINI WEATHER STATION" project, let's break down the requ
    ```
    sudo apt-get update
    sudo apt-get install python3-pip
-   sudo pip3 install Adafruit_DHT
+   sudo pip3 install Adafruit_dht
    ```
 2. For the camera module:
    ```
-   sudo apt-get install python3-picamera
+   sudo pip3 picamera2
    ```
 3. For displaying graphics:
    ```
