@@ -70,7 +70,7 @@ def update_sensor_data():
 # Function to update live camera feed
 def update_camera_feed():
     while True:
-        img_path = '/home/pi/weather_image.jpg'
+        img_path = 'Desktop/WEATHER_STATION/weather_image.jpg'
         picam2.capture_file(img_path)
         img = Image.open(img_path)
         img = img.resize((640, 480), Image.ANTIALIAS)
