@@ -3,26 +3,38 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import adafruit_dht
 import board
-import sqlite3
 import threading
 import time
 from picamera2 import Picamera2
 import os
+from openpyxl import Workbook, load_workbook
 
 # Define the folder path
-db_folder = '/home/pi/WEATHER_STATION'
+data_folder = '/home/Desktop/WEATHER_STATION'
 
 # Check if the folder exists, if not, create it
-if not os.path.exists(db_folder):
-    os.makedirs(db_folder)
+if not os.path.exists(data_folder):
+    os.makedirs(data_folder)
 
-# Set the database path to the folder
-db_path = os.path.join(db_folder, 'weather_station.db')
+# Set the Excel file path to the folder
+excel_path = os.path.join(data_folder, 'weather_station_data.xlsx')
 
-# Database setup
-conn = sqlite3.connect(db_path)
-c = conn.cursor()
-c.execute('''CREATE TABLE IF NOT EXISTS weather (timestamp DATETIME, temperature REAL, humidity REAL)''')
+# Check if the Excel file exists, if not, create it
+if not os.path.exists(excel_path):
+    # Create a new workbook and add headers
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = 'Weather Data'
+    sheet.append(['Timestamp', 'Temperature (C)', 'Humidity (%)'])  # Add header row
+    workbook.save(excel_path)
+
+# Function to save data to Excel
+def save_data_to_excel(temperature, humidity):
+    workbook = load_workbook(excel_path)
+    sheet = workbook.active
+    timestamp = time.strftime('%Y-%m-%d %H:%M:%S')  # Current time
+    sheet.append([timestamp, temperature, humidity])
+    workbook.save(excel_path)
 
 # Sensor setup
 sensor = adafruit_dht.DHT11(board.D4)  # Using GPIO pin 4 for the DHT 11 sensor
@@ -57,9 +69,8 @@ def update_sensor_data():
             if humidity is not None and temperature is not None:
                 temp_label.config(text=f"Temperature: {temperature:.1f} C")
                 humidity_label.config(text=f"Humidity: {humidity:.1f} %")
-                # Save to database
-                c.execute("INSERT INTO weather (timestamp, temperature, humidity) VALUES (datetime('now'), ?, ?)", (temperature, humidity))
-                conn.commit()
+                # Save data to Excel
+                save_data_to_excel(temperature, humidity)
             else:
                 temp_label.config(text="Failed to get reading. Try again!")
                 humidity_label.config(text="")
@@ -70,7 +81,7 @@ def update_sensor_data():
 # Function to update live camera feed
 def update_camera_feed():
     while True:
-        img_path = 'Desktop/WEATHER_STATION/weather_image.jpg'
+        img_path = '/home/Desktop/weather_image.jpg'
         picam2.capture_file(img_path)
         img = Image.open(img_path)
         img = img.resize((640, 480), Image.ANTIALIAS)
@@ -81,7 +92,7 @@ def update_camera_feed():
 
 # Function to capture and save image
 def snap_and_save():
-    img_path = '/home/pi/snap_image.jpg'
+    img_path = '/home/Desktop/snap_image.jpg'
     picam2.capture_file(img_path)
     messagebox.showinfo("Image Captured", f"Image saved as {os.path.basename(img_path)}")
 
